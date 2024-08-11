@@ -1,0 +1,71 @@
+# yaml-language-server: $schema=https://aka.ms/configuration-dsc-schema/0.2
+
+properties:
+  configurationVersion: 0.2.0
+  resources:
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: powershell
+    directives:
+      description: Install PowerShell
+      allowPrerelease: true
+    settings:
+      id: Microsoft.PowerShell
+      source: winget
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: ohmyposh
+    dependsOn:
+    - powershell 
+    directives:
+      description: Install Oh My Posh
+      allowPrerelease: true
+    settings:
+      id: JanDeDobbeleer.OhMyPosh
+      source: winget
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: winterm
+    directives:
+      description: Install Windows Terminal
+      allowPrerelease: true
+    settings:
+      id: Microsoft.WindowsTerminal
+      source: winget
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: totalcmd
+    directives:
+      description: Install Total Commander
+      allowPrerelease: true
+    settings:
+      id: Ghisler.TotalCommander
+      source: winget
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: vscode
+    directives:
+      description: Install VS Code
+      allowPrerelease: true
+    settings:
+      id: Microsoft.VisualStudioCode
+      source: winget
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: greenshot
+    directives:
+      description: Install Greenshot
+      allowPrerelease: true
+    settings:
+      id: Greenshot.Greenshot
+      source: winget
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: zeal
+    directives:
+      description: Install Zeal
+      allowPrerelease: true
+    settings:
+      id: OlegShparber.Zeal
+      source: winget
+  - resource: Microsoft.WinGet.DSC/WinGetPackage
+    id: gitfork
+    directives:
+      description: Install Fork
+      allowPrerelease: true
+    settings:
+      id: Fork.Fork
+      source: winget
