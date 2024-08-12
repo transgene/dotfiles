@@ -1,0 +1,5 @@
+[init]
+	defaultBranch = master
+[user]
+	name = transgene
+    email = my@email.com
