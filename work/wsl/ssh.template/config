@@ -1,0 +1,12 @@
+Host github.com
+  Hostname ssh.github.com
+  Port 443
+  IdentityFile ~/.ssh/private_key_for_github
+
+Host github.com
+  Hostname ssh.github.com
+  Port 443
+  IdentityFile ~/.ssh/another_private_key_for_github
+
+Host gitlab.com
+  IdentityFile ~/.ssh/private_key_for_gitlab
