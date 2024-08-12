@@ -11,9 +11,12 @@ import shutil
 import struct
 import subprocess
 import sys
+import tempfile
 import termios
 from datetime import date
 import pathlib
+
+import requests
 
 ENV_DIRS = ["home", "work"]
 
@@ -70,6 +73,7 @@ def install(dir: str):
     if os.path.exists(f"{dir}/windows"):
         with cwd(f"{dir}/windows"):
             __install_windows(backup_dir_path)
+
     if os.path.exists(f"{dir}/wsl"):
         with cwd(f"{dir}/wsl"):
             __install_wsl(backup_dir_path)
@@ -360,7 +364,103 @@ def __install_windows(backup_dir_path: str):
 
 
 def __install_wsl(backup_dir_path: str):
-    pass
+    zsh_check = subprocess.run(
+        shlex.split("zsh --version"), check=True, capture_output=True, text=True
+    ).stdout
+    if "command not found" in zsh_check:
+        print("Installing zsh...")
+        pty.spawn(
+            shlex.split("sudo apt install zsh"),
+            __pty_read,
+        )
+    zsh_is_shell_check = os.getenv("SHELL1")
+    if zsh_is_shell_check is None or "zsh" not in zsh_is_shell_check:
+        print("Making zsh the default shell...")
+        zsh_path = subprocess.run(
+            shlex.split("which zsh"), check=True, capture_output=True, text=True
+        ).stdout
+        pty.spawn(
+            shlex.split(f"chsh -s {zsh_path}"),
+            __pty_read,
+        )
+    print("Zsh is ready!")
+
+    if os.getenv("ZSH") is None:
+        print("Installing Oh My Zsh...")
+        with tempfile.NamedTemporaryFile(delete=False) as tmpfile:
+            response = requests.get(
+                "https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh"
+            )
+            if response.status_code != 200:
+                raise RuntimeError(
+                    "Couldn't download Oh My Zsh install script", response
+                )
+            tmpfile.write(response.content)
+            tmpfile_path = tmpfile.name
+        pty.spawn(
+            shlex.split(f"sh {tmpfile_path}"),
+            __pty_read,
+        )
+
+    zshrc_path = pathlib.Path("~/.zshrc.pre-oh-my-zsh").expanduser()
+    if zshrc_path.exists():
+        backup_zshrc_path = f"{backup_dir_path}{zshrc_path.parent}"
+        os.makedirs(backup_zshrc_path, exist_ok=True)
+        shutil.copy2(
+            src=zshrc_path,
+            dst=backup_zshrc_path,
+        )
+    ohmyzshrc_path = pathlib.Path("~/.zshrc").expanduser()
+    backup_ohmyzshrc_path = f"{backup_dir_path}{ohmyzshrc_path.parent}"
+    os.makedirs(backup_ohmyzshrc_path, exist_ok=True)
+    shutil.copy2(
+        src=ohmyzshrc_path,
+        dst=backup_ohmyzshrc_path,
+    )
+    os.remove(ohmyzshrc_path)
+    os.symlink(src=f"{os.getcwd()}/zsh/.zshrc", dst=ohmyzshrc_path)
+    print("Oh My Zsh is ready!")
+
+    powerlevel_theme_path = os.getenv(
+        "ZSH_CUSTOM", os.path.expanduser("~/.oh-my-zsh/custom/themes/powerlevel10k")
+    )
+    if not os.path.exists(powerlevel_theme_path):
+        print("Downloading the Powerlevel10k theme...")
+        git_errors = subprocess.run(
+            shlex.split(
+                f"git clone --depth=1 https://github.com/romkatv/powerlevel10k.git {powerlevel_theme_path}"
+            ),
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stderr.strip()
+        if git_errors:
+            raise RuntimeError("Error when downloading the theme", git_errors)
+        # print("Installing Powerlevel10k theme...")
+        # zshrc_path = pathlib.Path("~/.zshrc").expanduser()
+        # with open(zshrc_path) as f:
+        #     lines = f.readlines()
+        # with open(zshrc_path, "w") as f:
+        #     for line in lines:
+        #         if "ZSH_THEME" in line:
+        #             line = 'ZSH_THEME="powerlevel10k/powerlevel10k"'
+        #         f.write(line)
+        # print("Preparing to configure Powerlevel10k...")
+        # pty.spawn(
+        #     shlex.split("p10k configure"),
+        #     __pty_read,
+        # )
+    p10k_config_path = pathlib.Path("~/.p10k.zsh").expanduser()
+    if not p10k_config_path.exists():
+        os.symlink(src=f"{os.getcwd()}/zsh/.p10k.zsh", dst=p10k_config_path)
+    elif not p10k_config_path.is_symlink():
+        backup_p10k_config_path = f"{backup_dir_path}{p10k_config_path.parent}"
+        os.makedirs(backup_p10k_config_path, exist_ok=True)
+        shutil.copy2(src=p10k_config_path, dst=backup_p10k_config_path)
+        os.remove(p10k_config_path)
+        os.symlink(src=f"{os.getcwd()}/zsh/.p10k.zsh", dst=p10k_config_path)
+
+    print("Powerlevel10k is ready!")
 
 
 def run():

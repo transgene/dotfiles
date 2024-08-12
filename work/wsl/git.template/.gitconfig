@@ -1,0 +1,14 @@
+# Default configuration
+[user]
+	name = Name Surname
+	email = work@email.com
+
+# Project configuration. 
+# Overwrites the default one if the repository in that directory
+[includeIf "gitdir:~/base-project-directory/"]
+	path = .gitconfig-project
+	
+# Configuration for the personal projects.
+# Also overwrites the default ont
+[includeIf "gitdir:~/repos/mine/"]
+	path = .gitconfig-personal
