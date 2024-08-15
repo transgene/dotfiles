@@ -120,7 +120,22 @@ export PYTHONPATH=$(ZIPS=("$SPARK_HOME"/python/lib/*.zip); IFS=:; echo "${ZIPS[*
 alias nvim="~/programs/nvim.appimage"
 alias pbcopy="xsel --input --clipboard"
 alias pbpaste="xsel --output --clipboard"
-alias fork="fork.exe $(wslpath -m -a .)"
+
+explorer() {
+  arg=$1
+  if [[ ! -s $1 ]]; then
+    arg="."
+  fi
+  explorer.exe "$(wslpath -w -a $arg)"
+}
+
+fork() {
+  arg=$1
+  if [[ ! -s $1 ]]; then
+    arg="."
+  fi
+  fork.exe "$(wslpath -w -a $arg)"
+}
 
 javaset() {
   declare -A javaVersions=(["8"]="8.0.382-tem" ["11"]="11.0.20-tem" ["17"]="17.0.8-tem")
