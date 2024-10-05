@@ -34,7 +34,7 @@
     "centerOnLaunch": true,
     "copyFormatting": "none",
     "copyOnSelect": false,
-    "defaultProfile": "{e5a83caa-4c73-52b3-ae6b-bc438d721ef9}",
+    "defaultProfile": "{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}",
     "experimental.rendering.software": false,
     "launchMode": "default",
     "minimizeToNotificationArea": false,
@@ -97,18 +97,16 @@
                 "name": "Command Prompt"
             },
             {
-                "commandline": "C:\\Windows\\system32\\wsl.exe -d Ubuntu",
-                "guid": "{e5a83caa-4c73-52b3-ae6b-bc438d721ef9}",
-                "hidden": false,
-                "name": "Ubuntu 24.04 LTS",
-                "source": "CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc",
-                "startingDirectory": "~",
-                "tabTitle": "Ubuntu 24.04 LTS"
-            },
-            {
                 "guid": "{61c54bbd-c2c6-5271-96e7-009a87ff44bf}",
                 "hidden": true,
                 "name": "Windows PowerShell"
+            },
+            {
+                "commandline": "C:\\Windows\\system32\\wsl.exe -d Ubuntu",
+                "guid": "{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}",
+                "hidden": false,
+                "name": "Ubuntu 24.04 LTS",
+                "startingDirectory": "~"
             }
         ]
     },
