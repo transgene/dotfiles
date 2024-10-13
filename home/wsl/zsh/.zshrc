@@ -111,6 +111,23 @@ source $ZSH/oh-my-zsh.sh
 alias nvim="~/programs/nvim.appimage"
 alias pbcopy="xsel --input --clipboard"
 alias pbpaste="xsel --output --clipboard"
+alias lz="lazygit"
+
+explorer() {
+  arg=$1
+  if [[ ! -s $1 ]]; then
+    arg="."
+  fi
+  explorer.exe "$(wslpath -w -a $arg)"
+}
+
+fork() {
+  arg=$1
+  if [[ ! -s $1 ]]; then
+    arg="."
+  fi
+  fork.exe "$(wslpath -w -a $arg)"
+}
 
 # Environment variables
 export PATH=$PATH:/usr/local/go/bin:/usr/local/cuda-12.5/bin
