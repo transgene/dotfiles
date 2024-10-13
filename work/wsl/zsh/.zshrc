@@ -120,6 +120,7 @@ export PYTHONPATH=$(ZIPS=("$SPARK_HOME"/python/lib/*.zip); IFS=:; echo "${ZIPS[*
 alias nvim="~/programs/nvim.appimage"
 alias pbcopy="xsel --input --clipboard"
 alias pbpaste="xsel --output --clipboard"
+alias lz="lazygit"
 
 explorer() {
   arg=$1
