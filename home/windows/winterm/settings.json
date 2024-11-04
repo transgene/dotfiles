@@ -32,7 +32,7 @@
             "id": "User.find",
             "keys": "ctrl+shift+f"
         },
-	{ 
+	    { 
 	    "command": null, 
             "keys": ["win+`"]
         }
