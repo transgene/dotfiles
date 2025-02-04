@@ -121,6 +121,7 @@ alias nvim="~/programs/nvim.appimage"
 alias pbcopy="xsel --input --clipboard"
 alias pbpaste="xsel --output --clipboard"
 alias lz="lazygit"
+alias kubectl="minikube kubectl --"
 
 explorer() {
   arg=$1
