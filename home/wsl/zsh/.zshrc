@@ -112,6 +112,7 @@ alias nvim="~/programs/nvim.appimage"
 alias pbcopy="xsel --input --clipboard"
 alias pbpaste="xsel --output --clipboard"
 alias lz="lazygit"
+alias lzd="lazydocker"
 
 explorer() {
   arg=$1
@@ -130,7 +131,9 @@ fork() {
 }
 
 # Environment variables
-export PATH=$PATH:/usr/local/go/bin:/usr/local/cuda-12.5/bin
+export GOROOT=/usr/local/go
+export GOPATH=$HOME/go
+export PATH=$GOPATH/bin:$GOROOT/bin:/usr/local/cuda-12.5/bin:$PATH
 # export LD_LIBRARY_PATH=/usr/local/cuda-12.5/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -139,4 +142,15 @@ export PATH=$PATH:/usr/local/go/bin:/usr/local/cuda-12.5/bin
 
 # Created by `pipx` on 2024-08-02 16:13:43
 export PATH="$PATH:/home/gene/.local/bin"
-if [ -f "/home/gene/.config/fabric/fabric-bootstrap.inc" ]; then . "/home/gene/.config/fabric/fabric-bootstrap.inc"; fi
+
+# Loop through all files in the ~/.config/fabric/patterns directory
+for pattern_file in $HOME/.config/fabric/patterns/*; do
+    # Get the base name of the file (i.e., remove the directory path)
+    pattern_name=$(basename "$pattern_file")
+
+    # Create an alias in the form: alias pattern_name="fabric --pattern pattern_name"
+    alias_command="alias $pattern_name='fabric --pattern $pattern_name'"
+
+    # Evaluate the alias command to add it to the current shell
+    eval "$alias_command"
+done
