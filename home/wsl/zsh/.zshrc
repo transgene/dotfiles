@@ -133,7 +133,7 @@ fork() {
 # Environment variables
 export GOROOT=/usr/local/go
 export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$GOROOT/bin:/usr/local/cuda-12.5/bin:$PATH
+export PATH=$GOPATH/bin:$GOROOT/bin:/usr/local/cuda-12.5/bin:${ASDF_DATA_DIR:-$HOME/.asdf}/shims:$PATH
 # export LD_LIBRARY_PATH=/usr/local/cuda-12.5/lib64${LD_LIBRARY_PATH:+:${LD_LIBRARY_PATH}}
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
@@ -154,3 +154,8 @@ for pattern_file in $HOME/.config/fabric/patterns/*; do
     # Evaluate the alias command to add it to the current shell
     eval "$alias_command"
 done
+
+# asdf autocompletions
+fpath=(${ASDF_DATA_DIR:-$HOME/.asdf}/completions $fpath)
+# initialise completions with ZSH's compinit
+autoload -Uz compinit && compinit
